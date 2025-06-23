@@ -19,24 +19,74 @@ dependencies:
   - tqdm
   - colorama
 ```
+
+
 # Installation
+
 ```bash
+git clone https://github.com/liangcheng-hrbmu/intraAlignment.git
+cd intraAlignment
 conda env create -n intraAlignment -f intraAlignment.yaml
 ```
 
 
 
-# Example
+# Reference database preparation
+
+**We recommend selecting a disk location with sufficient available space to download and store the reference databases.**
+
+1. **[kraken2 reference database](https://benlangmead.github.io/aws-indexes/k2)**
+
+****
 
 ```bash
-python [...]/intraAlignment.py -rp [...]/cellranger[&spaceranger]/outs -method kraken2 -db [...]/k2_db
-
-
-python [...]/intraAlignment.py -rp [...]/cellranger[&spaceranger]/outs -method blast -db [...]/nt_db/nt
+cd <ref_db_path> # disk location with sufficient available space
+wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20250402.tar.gz # 86.8 GB
+tar zxvf k2_standard_20250402.tar.gz #
 ```
 
 
 
+2. **[blastn reference database](https://ftp.ncbi.nlm.nih.gov/blast/db/)**
+
+****
+
+```bash
+# option 1
+cd <ref_db_path> # disk location with sufficient available space
+update_blastdb.pl --passive --decompress nt
+
+# option 2
+# curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/db/ | grep -o 'nt\.[0-9]\{3\}\.tar\.gz\(\.md5\)\?' | awk '{print "https://ftp.ncbi.nlm.nih.gov/blast/db/" $0}' - > file_url.txt
+# cat -s file_list.txt | grep -o 'nt\.[0-9]\{3\}\.tar\.gz\(\.md5\)\?' | awk '{print "https://ftp.ncbi.nlm.nih.gov/blast/db/" $0}' - > file_url.txt
+# aria2c -i file_url.txt --enable-http-pipelining="true" -x16 -s100 -j4 --allow-piece-length-change="true" --piece-length="16M" --min-split-size="16M" -c -m 5 --retry-wait=20
+```
+
+   
+
+
+
+# Usage example
+
+**10X data**
+
+```bash
+# 10X using kraken2 
+python <...>/intraAlignment.py -rp <10x_dt_path>/<cellranger[&spaceranger]>/outs -db <ref_db_path>/k2_standard_20250402
+
+# 10X usingblastn 
+python <...>/intraAlignment.py -rp <10x_dt_path>/<cellranger[&spaceranger]>/outs -method blast -db <ref_db_path>/nt_db/nt
+```
+
+**C4 data**
+
+```bash
+# C4 usingkraken2 
+python [...]/intraAlignment.py -p c4 -c4_o <c4_dt_path>/<dnbc4tools>/outs -c4_r1 <c4_dt_path>/<sample>_cDNA_R1.fq.gz -db <ref_db_path>/k2_standard_20250402
+
+# C4 using blastn 
+python [...]/intraAlignment.py -p c4 -c4_o <c4_dt_path>/<dnbc4tools>/outs -c4_r1 <c4_dt_path>/<sample>_cDNA_R1.fq.gz -method blast -db <ref_db_path>/nt_db/nt
+```
 
 
 
