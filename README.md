@@ -1,4 +1,4 @@
-# Requirements
+# 1. Requirements
 
 ### softwares and packages requirements
 
@@ -20,8 +20,9 @@ dependencies:
   - colorama
 ```
 
+# 2. Installation
 
-# Installation
+### **method 1 - git & conda**
 
 ```bash
 git clone https://github.com/liangcheng-hrbmu/intraAlignment.git
@@ -29,9 +30,15 @@ cd intraAlignment
 conda env create -n intraAlignment -f intraAlignment.yaml
 ```
 
+### **method 2 - docker**
+
+```bash
+docker pull ghcr.io/liangcheng-hrbmu/intra_alignment:latest
+```
 
 
-# Reference database preparation
+
+# 3. Reference database preparation
 
 **We recommend selecting a disk location with sufficient available space to download and store the reference databases.**
 
@@ -66,7 +73,9 @@ update_blastdb.pl --passive --decompress nt
 
 
 
-# Usage example
+# 4. Usage example
+
+### **method 1 - git & conda**
 
 **10X data**
 
@@ -90,5 +99,12 @@ python [...]/intraAlignment.py -p c4 -c4_o <c4_dt_path>/<dnbc4tools>/outs -c4_r1
 
 
 
+### **method 2 - docker**
 
+```bash
+# create contanier
+docker run -it --name intraAlignment -v <data_path>:/<data_path> ghcr.io/liangcheng-hrbmu/intra_alignment
+
+intraAlignment -rp <10x_dt_path>/<cellranger[&spaceranger]>/outs -db <ref_db_path>/k2_standard_20250402
+```
 
