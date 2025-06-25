@@ -42,7 +42,7 @@ conda env create -n intraAlignment -f intraAlignment.yaml
 ```bash
 cd <ref_db_path> # disk location with sufficient available space
 wget https://genome-idx.s3.amazonaws.com/kraken/k2_standard_20250402.tar.gz # 86.8 GB
-tar zxvf k2_standard_20250402.tar.gz #
+mkdir -p k2_standard_20250402 && tar -zxvf k2_standard_20250402.tar.gz -C k2_standard_20250402 #
 ```
 
 
