@@ -65,7 +65,6 @@ update_blastdb.pl --passive --decompress nt
 
 # option 2
 # curl -s ftp://ftp.ncbi.nlm.nih.gov/blast/db/ | grep -o 'nt\.[0-9]\{3\}\.tar\.gz\(\.md5\)\?' | awk '{print "https://ftp.ncbi.nlm.nih.gov/blast/db/" $0}' - > file_url.txt
-# cat -s file_list.txt | grep -o 'nt\.[0-9]\{3\}\.tar\.gz\(\.md5\)\?' | awk '{print "https://ftp.ncbi.nlm.nih.gov/blast/db/" $0}' - > file_url.txt
 # aria2c -i file_url.txt --enable-http-pipelining="true" -x16 -s100 -j4 --allow-piece-length-change="true" --piece-length="16M" --min-split-size="16M" -c -m 5 --retry-wait=20
 ```
 
